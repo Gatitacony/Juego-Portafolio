@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración de Tecnologías</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Demostración de Tecnologías</h1>
+    <div class="tech-cards">
+        <div class="tech-card">
+            <h2>HTML</h2>
+            <p>HTML (HyperText Markup Language) se utiliza para estructurar el contenido en la web. Este proyecto utiliza HTML para definir la estructura de las páginas web.</p>
+            <pre><code>&lt;div&gt;Ejemplo de código HTML&lt;/div&gt;</code></pre>
+        </div>
+        <div class="tech-card">
+            <h2>CSS</h2>
+            <p>CSS (Cascading Style Sheets) se utiliza para estilizar el contenido de la web. Este proyecto utiliza CSS para definir los estilos visuales.</p>
+            <pre><code>body { background-color: #f0f0f0; }</code></pre>
+        </div>
+        <div class="tech-card">
+            <h2>JavaScript</h2>
+            <p>JavaScript se utiliza para crear interactividad en la web. Este proyecto utiliza JavaScript para añadir funcionalidades dinámicas.</p>
+            <pre><code>console.log('Hola, mundo');</code></pre>
+        </div>
+        <div class="tech-card">
+            <h2>Python</h2>
+            <p>Python se utiliza para la lógica del servidor en este proyecto, manejando las rutas y la lógica de la aplicación.</p>
+            <pre><code>from flask import Flask, render_template</code></pre>
+        </div>
+        <div class="tech-card">
+            <h2>Flask</h2>
+            <p>Flask es un microframework para Python que se utiliza para crear aplicaciones web. Este proyecto usa Flask para manejar las rutas y la lógica de la aplicación.</p>
+            <pre><code>@app.route('/')</code></pre>
+        </div>
+        <div class="tech-card">
+            <h2>CodeIgniter</h2>
+            <p>CodeIgniter es un framework PHP. Aunque no se utiliza en este proyecto, es una herramienta poderosa para crear aplicaciones web rápidas.</p>
+        </div>
+        <div class="tech-card">
+            <h2>Django</h2>
+            <p>Django es un framework de alto nivel para Python que permite el desarrollo rápido de aplicaciones web. No se utiliza en este proyecto, pero es ideal para proyectos más grandes.</p>
+        </div>
+    </div>
+</body>
+</html>

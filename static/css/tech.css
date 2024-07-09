@@ -1,0 +1,29 @@
+.tech-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.tech-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #520b81;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 40px);
+    box-sizing: border-box;
+}
+.tech-card h2 {
+    margin-top: 0;
+}
+.tech-card pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+
+
+
+
+

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from db import get_db_connection, init_db, add_user
+import subprocess
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -53,6 +55,20 @@ def game():
     if 'logged_in' in session:
         username = session['username']
         return render_template('game.html', username=username)
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/tech')
+def tech():
+    return render_template('tech.html')
+
+# Ruta para iniciar el juego con Pygame
+@app.route('/start_game')
+def start_game():
+    if 'logged_in' in session:
+        game_path = os.path.join('static', 'js', 'game.py')
+        subprocess.Popen(["python3", game_path])
+        return "El juego ha comenzado! Puedes cerrar esta ventana."
     else:
         return redirect(url_for('login'))
 
