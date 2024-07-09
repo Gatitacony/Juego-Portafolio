@@ -11,7 +11,9 @@ function togglePasswordVisibility(inputId, eyeIcon) {
     }
 }
 
-$(document).ready(function(){
+function startGame() {
+    document.getElementById('startButtonContainer').style.display = 'none';
+    document.getElementById('skillCarousel').style.display = 'block';
     $('.owl-carousel').owlCarousel({
         loop:true,
         margin:10,
@@ -29,4 +31,4 @@ $(document).ready(function(){
             }
         }
     });
-});
+}

@@ -4,7 +4,7 @@ from db import get_db_connection, init_db, add_user
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Inicializar la base de datos al iniciar la aplicación
+# Inicializa la base de datos al iniciar la aplicación
 with app.app_context():
     init_db()
 
