@@ -55,6 +55,12 @@ h1 {
     text-shadow: 2px 2px 5px #003300; /* Sombra verde oscuro */
 }
 
+p {
+    color: #ffffff;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
 #timeline, #status {
     margin-top: 20px;
 }
@@ -96,9 +102,9 @@ button:hover {
 
 .owl-carousel .card {
     background-color: #0a0a0a;
-    padding: 20px;
+    padding: 13px;
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     width: 100%;
     max-width: 300px;
@@ -107,10 +113,25 @@ button:hover {
 .owl-carousel .card h2 {
     color: #00FF00;
     margin-bottom: 10px;
+    font-size: 1.5em;
 }
 
 .owl-carousel .card p {
     color: #FFFFFF;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.owl-carousel .card pre {
+    background-color: #003300;
+    color: #00FF00;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.owl-carousel .card code {
+    color: #00FF00;
 }
 
 .owl-carousel .owl-nav {
@@ -121,37 +142,17 @@ button:hover {
 }
 
 .owl-carousel .owl-nav button.owl-prev, .owl-carousel .owl-nav button.owl-next {
-    background-color: #1679AB;
-    color: #FFFFFF;
+    background-color: #f700ff;
+    color: #ff0000;
     border-radius: 50%;
     padding: 10px 15px;
     margin: 0 10px;
     transition: background-color 0.3s, transform 0.3s;
 }
 
-.owl-carousel .owl-nav button.owl-prev:hover, .owl-carousel .owl-nav button.owl-next:hover {
-    background-color: #FFB1B1;
-    color: #102C57;
-    transform: translateY(-5px);
-}
-
 .owl-carousel .owl-dots {
     text-align: center;
     margin-top: 20px;
-}
-
-.owl-carousel .owl-dots .owl-dot {
-    display: inline-block;
-    margin: 0 5px;
-    width: 10px;
-    height: 10px;
-    background-color: #1679AB;
-    border-radius: 50%;
-    transition: background-color 0.3s;
-}
-
-.owl-carousel .owl-dots .owl-dot.active {
-    background-color: #FFB1B1;
 }
 
 /* Estilos adicionales para las animaciones de los botones */
@@ -169,3 +170,4 @@ button:hover {
 .explode {
     animation: explode 0.5s forwards;
 }
+ 
