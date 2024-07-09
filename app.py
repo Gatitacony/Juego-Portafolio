@@ -57,7 +57,7 @@ def game():
         return render_template('game.html', username=username)
     else:
         return redirect(url_for('login'))
-    
+
 @app.route('/tech')
 def tech():
     return render_template('tech.html')
@@ -68,7 +68,7 @@ def start_game():
     if 'logged_in' in session:
         game_path = os.path.join('static', 'js', 'game.py')
         subprocess.Popen(["python3", game_path])
-        return "El juego ha comenzado! Puedes cerrar esta ventana."
+        return "El juego ha comenzado! Al finalizar vuelve por tus recompensas 🎆."
     else:
         return redirect(url_for('login'))
 

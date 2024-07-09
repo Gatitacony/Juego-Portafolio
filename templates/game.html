@@ -22,9 +22,14 @@
     <div class="container content">
         {% if 'logged_in' in session %}
             <h1>Bienvenido, {{ username }}</h1>
+            <p>He diseñado este juego para desarrolladores y reclutadores, para que puedan descubrir mis habilidades y conocimientos de una manera entretenida y moderna.</p>
+            <div id="options">
+                <button class="option-button" onclick="chooseRole('observer')">Observador</button>
+                <button class="option-button" onclick="chooseRole('player')">Jugador</button>
+            </div>
             <div id="timeline"></div>
             <div id="status"></div>
-            <div id="startButtonContainer">
+            <div id="startButtonContainer" style="display: none;">
                 <button id="startButton" onclick="startGame()">Iniciar Juego</button>
             </div>  
             <div id="skillCarousel" style="display: none;">
@@ -52,11 +57,59 @@
             <p>No has iniciado sesión. <a href="{{ url_for('login') }}">Iniciar sesión</a></p>  
         {% endif %}
     </div>
+    <audio id="backgroundMusic" src="{{ url_for('static', filename='audio/background-music.mp3') }}" loop></audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <script>
+        function goBack() {
+            location.reload();
+        }
 
+        function reloadPage() {
+            location.reload();
+        }
+
+        function chooseRole(role) {
+            if (role === 'observer') {
+                window.location.href = 'portfolio.html';
+            } else if (role === 'player') {
+                document.getElementById('options').style.display = 'none';
+                document.getElementById('startButtonContainer').style.display = 'block';
+                playFireworks();
+                document.getElementById('backgroundMusic').play();
+            }
+        }
+
+        function startGame() {
+            fetch('/start_game')
+                .then(response => response.text())
+                .then(data => alert(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function playFireworks() {
+            const buttons = document.querySelectorAll('.option-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    button.classList.add('explode');
+                    setTimeout(() => {
+                        button.classList.remove('explode');
+                    }, 500);
+                });
+            });
+        }
+
+        // Llamar a la función para los botones iniciales
+        playFireworks();
+
+        // Función para corregir el problema del audio no apto
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundMusic');
+            audio.play().catch(error => {
+                console.log('Audio no apto para reproducción automática, necesita interacción del usuario');
+            });
+        });
     </script>
 </body>
 </html>
