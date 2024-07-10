@@ -1,0 +1,11 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = "^2.0.1"
+pygame = "^2.1.0"
+
+[tool.poetry.dev-dependencies]
+# Si tienes dependencias de desarrollo específicas para la compilación, agrégalas aquí.

@@ -4,3 +4,4 @@ Werkzeug==2.0.3
 python-dotenv==1.0.0
 sqlalchemy==1.4.31
 gunicorn==22.0.0
+python==3.10.12
