@@ -86,4 +86,5 @@ def start_game():
         return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5000)  # Ejemplo de cambiar al puerto 5001
+
