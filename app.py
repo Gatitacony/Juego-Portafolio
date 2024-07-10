@@ -2,11 +2,22 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from db import get_db_connection, init_db, add_user
 import subprocess
 import os
+from config import DevelopmentConfig, TestingConfig, ProductionConfig
+from dotenv import load_dotenv  # Asegúrate de que esta importación es correcta
 
-
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+
+# Configura la aplicación Flask para usar el archivo config.py
+config_type = os.getenv('FLASK_CONFIG_TYPE', 'development')
+if config_type == 'development':
+    app.config.from_object(DevelopmentConfig)
+elif config_type == 'testing':
+    app.config.from_object(TestingConfig)
+elif config_type == 'production':
+    app.config.from_object(ProductionConfig)
 
 # Inicializa la base de datos al iniciar la aplicación
 with app.app_context():
@@ -75,4 +86,4 @@ def start_game():
         return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
