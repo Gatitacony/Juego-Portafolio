@@ -1,16 +1,10 @@
-import os
-
-class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-class DevelopmentConfig(Config):
+class DevelopmentConfig:
     DEBUG = True
-    ENV = 'development'
+    SECRET_KEY = 'dev'
 
-class TestingConfig(Config):
+class TestingConfig:
     TESTING = True
+    SECRET_KEY = 'test'
 
-class ProductionConfig(Config):
-    DEBUG = False
-    ENV = 'production'
+class ProductionConfig:
+    SECRET_KEY = 'prod'

@@ -28,34 +28,138 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-function startGame() {
-    fetch('/start_game')
-        .then(response => response.text())
-        .then(data => {
-            alert(data);
-            document.getElementById('startButtonContainer').style.display = 'none';
-            document.getElementById('skillCarousel').style.display = 'block';
-            document.getElementById('gameInfo').style.display = 'block';
-            $('.owl-carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: true,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 3
-                    },
-                    1000: {
-                        items: 5
-                    }
-                }
-            });
-        })
-        .catch(error => console.error('Error:', error));
+function goBack() {
+    location.reload();
 }
 
 function reloadPage() {
     location.reload();
+}
+
+function chooseRole(role) {
+    if (role === 'observer') {
+        window.location.href = 'portfolio.html';
+    } else if (role === 'player') {
+        document.getElementById('options').style.display = 'none';
+        document.getElementById('startButtonContainer').style.display = 'block';
+        document.getElementById('titulo').style.display = 'none';
+        document.getElementById('parrafo').style.display = 'none';        
+        document.getElementById('audioControls').style.display = 'block';  // Mostrar controles de audio
+        playFireworks();
+        document.getElementById('backgroundMusic').play();
+    }
+}
+
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        document.getElementById('gameCanvas').style.display = 'block';
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: '#1679AB',
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 200 }
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        const game = new Phaser.Game(config);
+
+        function preload() {
+            this.load.image('jugador', 'static/images/hacker.png');
+        }
+        
+        function create() {
+            // Crear el personaje del jugador
+            this.jugador = this.physics.add.image(100, 450, 'jugador');
+            this.jugador.setCollideWorldBounds(true); // Para que el jugador no salga del área de juego
+        
+            // Aquí puedes añadir más configuraciones y comportamientos al jugador
+        }                        
+
+        function update() {
+            // Ejemplo básico de movimiento del jugador con las teclas de flecha
+            if (this.cursors.left.isDown) {
+                this.jugador.setVelocityX(-160);
+            } else if (this.cursors.right.isDown) {
+                this.jugador.setVelocityX(160);
+            } else {
+                this.jugador.setVelocityX(0);
+            }
+        
+            if (this.cursors.up.isDown) {
+                this.jugador.setVelocityY(-160);
+            } else if (this.cursors.down.isDown) {
+                this.jugador.setVelocityY(160);
+            } else {
+                this.jugador.setVelocityY(0);
+            }
+        }
+        
+    
+
+        function preload() {
+            this.load.image('protector', 'static/images/personaje-protector.png');
+        }
+        
+        function create() {
+            this.protector = this.physics.add.image(400, 300, 'protector');
+            this.protector.setBounce(0.8);
+            this.protector.setCollideWorldBounds(true);
+        
+            // Configurar teclas para movimiento
+            this.cursors = this.input.keyboard.createCursorKeys();
+        }
+        
+        
+        function update() {
+            this.ball.setVelocityX(100);
+        }
+    }
+}
+
+let gameStarted = false;
+
+function playFireworks() {
+    const buttons = document.querySelectorAll('.option-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            button.classList.add('explode');
+            setTimeout(() => {
+                button.classList.remove('explode');
+            }, 500);
+        });
+    });
+}
+
+playFireworks();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('backgroundMusic');
+    audio.play().catch(error => {
+        console.log('Audio no apto para reproducción automática, necesita interacción del usuario');
+    });
+});
+
+function toggleAudio() {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+    } else {
+        backgroundMusic.pause();
+    }
+}
+
+function setVolume(volume) {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.volume = volume;
 }

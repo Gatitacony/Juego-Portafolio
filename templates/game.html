@@ -7,23 +7,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
     <script src="{{ url_for('static', filename='js/matrix.js') }}" defer></script>
+
     <style>
         body { margin: 0; }
         canvas { display: block; }
+        #audioControls { display: none; } /* Inicialmente oculto */
+        #audioToggleBtn { background: none; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
-    <canvas id="matrix"></canvas>
     <div class="navbar">
         <a onclick="reloadPage()">Volver atrás</a>
         <a href="/" onclick="goBack()">Cerrar sesión</a>
     </div>
-
+    <canvas id="matrix"></canvas>
     <div class="container content">
         {% if 'logged_in' in session %}
-            <h1>Bienvenido, {{ username }}</h1>
-            <p>He diseñado este juego para desarrolladores y reclutadores, para que puedan descubrir mis habilidades y conocimientos de una manera entretenida y moderna.</p>
+            <h1 id="titulo" style="display: block;">Bienvenido, {{ username }}</h1>
+            <p id="parrafo"style="display: block;">He diseñado este juego para desarrolladores y reclutadores, para que puedan descubrir mis habilidades y conocimientos de una manera entretenida y moderna.</p>
             <div id="options">
                 <button class="option-button" onclick="chooseRole('observer')">Observador</button>
                 <button class="option-button" onclick="chooseRole('player')">Jugador</button>
@@ -35,6 +38,7 @@
             </div>  
             <div id="skillCarousel" style="display: none;">
                 <div class="owl-carousel owl-theme">
+                    <!-- Aquí van las tarjetas de habilidades -->
                     <div class="item">
                         <div class="card">
                             <h2>HTML</h2>
@@ -74,7 +78,6 @@
                         <div class="card">
                             <h2>CodeIgniter</h2>
                             <p>CodeIgniter es un framework PHP. Aunque no se utiliza en este proyecto, es una herramienta poderosa para crear aplicaciones web rápidas.</p>
-
                         </div>
                     </div>
                     <div class="item">
@@ -86,140 +89,52 @@
                     </div>
                 </div>
             </div>
-            <a id="gameInfo" >Puntos: <span id="points">0</span></a> 
-            <a id="gameInfo" >Vidas: <span id="lives">3</span></a>
+            <a id="gameInfo">Puntos: <span id="points">0</span></a> 
+            <a id="gameInfo">Vidas: <span id="lives">3</span></a>
         {% else %}
             <p>No has iniciado sesión. <a href="{{ url_for('login') }}">Iniciar sesión</a></p>  
         {% endif %}
     </div>
 
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="gameCanvas" style="display: none;"></canvas>
+
+    <div id="audioControls"> <!-- Controles de audio -->
+        <button id="audioToggleBtn" onclick="toggleAudio()">
+            <i id="audioIcon" class="fas fa-volume-mute"></i>
+        </button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" oninput="setVolume(this.value)">
+    </div>
 
     <audio id="backgroundMusic" src="{{ url_for('static', filename='audio/background-music.mp3') }}" loop></audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.8/pixi.min.js"></script>
+
     <script>
-        function goBack() {
-            location.reload();
-        }
-
-        function reloadPage() {
-            location.reload();
-        }
-
-        function chooseRole(role) {
-            if (role === 'observer') {
-                window.location.href = 'portfolio.html';
-            } else if (role === 'player') {
-                document.getElementById('options').style.display = 'none';
-                document.getElementById('startButtonContainer').style.display = 'block';
-                playFireworks();
-                document.getElementById('backgroundMusic').play();
+        function toggleAudio() {
+            const audio = document.getElementById('backgroundMusic');
+            const audioIcon = document.getElementById('audioIcon');
+            
+            if (audio.paused) {
+                audio.play();
+                audioIcon.classList.remove('fa-volume-mute');
+                audioIcon.classList.add('fa-volume-up');
+            } else {
+                audio.pause();
+                audioIcon.classList.remove('fa-volume-up');
+                audioIcon.classList.add('fa-volume-mute');
             }
         }
 
-        function startGame() {
-            fetch('/start_game_pixi')  // Aquí se cambia la ruta a la nueva ruta para Pixi.js
-                .then(response => response.text())
-                .then(data => alert(data))  // Aquí puedes manejar la respuesta del servidor si es necesario
-                .catch(error => console.error('Error:', error));
-        }
-        function playFireworks() {
-            const buttons = document.querySelectorAll('.option-button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function() {
-                    button.classList.add('explode');
-                    setTimeout(() => {
-                        button.classList.remove('explode');
-                    }, 500);
-                });
-            });
+        function setVolume(volume) {
+            const audio = document.getElementById('backgroundMusic');
+            audio.volume = volume;
         }
 
-        // Llamar a la función para los botones iniciales
-        playFireworks();
-
-        // Función para corregir el problema del audio no apto
         document.addEventListener('DOMContentLoaded', function() {
             const audio = document.getElementById('backgroundMusic');
             audio.play().catch(error => {
                 console.log('Audio no apto para reproducción automática, necesita interacción del usuario');
             });
-
-            // Configuración de Pixi.js
-            const app = new PIXI.Application({ width: 800, height: 600 });
-            document.body.appendChild(app.view);
-
-            // Carga de imágenes
-            PIXI.Loader.shared
-                .add('background', '{{ url_for("static", filename="images/galaxy-background.jpg") }}')
-                .add('character', '{{ url_for("static", filename="images/personaje-matrix.png") }}')
-                .load(setup);
-
-            let character, background;
-
-            function setup() {
-                // Fondo
-                background = new PIXI.Sprite(PIXI.Loader.shared.resources['background'].texture);
-                app.stage.addChild(background);
-
-                // Personaje
-                character = new PIXI.Sprite(PIXI.Loader.shared.resources['character'].texture);
-                character.x = 400;
-                character.y = 300;
-                character.anchor.set(0.5);
-                app.stage.addChild(character);
-
-                // Escuchar actualizaciones de cuadro
-                app.ticker.add(delta => gameLoop(delta));
-                
-                // Escuchar eventos del teclado
-                window.addEventListener('keydown', onKeyDown);
-                window.addEventListener('keyup', onKeyUp);
-            }
-
-            let keys = {};
-
-            function onKeyDown(e) {
-                keys[e.code] = true;
-            }
-
-            function onKeyUp(e) {
-                keys[e.code] = false;
-            }
-
-            function gameLoop(delta) {
-                // Movimiento del personaje
-                if (keys['ArrowLeft']) {
-                    character.x -= 5 * delta;
-                }
-                if (keys['ArrowRight']) {
-                    character.x += 5 * delta;
-                }
-                if (keys['ArrowUp']) {
-                    character.y -= 5 * delta;
-                }
-                if (keys['ArrowDown']) {
-                    character.y += 5 * delta;
-                }
-
-                // Verificar colisiones (ejemplo con límites)
-                if (character.x < 0) {
-                    character.x = 0;
-                }
-                if (character.x > app.screen.width) {
-                    character.x = app.screen.width;
-                }
-                if (character.y < 0) {
-                    character.y = 0;
-                }
-                if (character.y > app.screen.height) {
-                    character.y = app.screen.height;
-                }
-            }
         });
     </script>
 </body>
