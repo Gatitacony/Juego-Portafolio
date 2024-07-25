@@ -7,15 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
     <script src="{{ url_for('static', filename='js/matrix.js') }}" defer></script>
-
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-        #audioControls { display: none; } /* Inicialmente oculto */
-        #audioToggleBtn { background: none; border: none; cursor: pointer; }
-    </style>
+    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}" defer></script>
 </head>
 <body>
     <div class="navbar">
@@ -35,7 +31,7 @@
             <div id="status"></div>
             <div id="startButtonContainer" style="display: none;">
                 <button id="startButton" onclick="startGame()">Iniciar Juego</button>
-            </div>  
+            </div>
             <div id="skillCarousel" style="display: none;">
                 <div class="owl-carousel owl-theme">
                     <!-- Aquí van las tarjetas de habilidades -->
@@ -44,7 +40,7 @@
                             <h2>HTML</h2>
                             <p>HTML (HyperText Markup Language) se utiliza para estructurar el contenido en la web. Este proyecto utiliza HTML para definir la estructura de las páginas web.</p>
                             <pre><code>&lt;div&gt;Ejemplo de código HTML&lt;/div&gt;</code></pre>
-                        </div>    
+                        </div>
                     </div>
                     <div class="item">
                         <div class="card">
@@ -89,14 +85,12 @@
                     </div>
                 </div>
             </div>
-            <a id="gameInfo">Puntos: <span id="points">0</span></a> 
+            <a id="gameInfo">Puntos: <span id="points">0</span></a>
             <a id="gameInfo">Vidas: <span id="lives">3</span></a>
         {% else %}
-            <p>No has iniciado sesión. <a href="{{ url_for('login') }}">Iniciar sesión</a></p>  
+            <p>No has iniciado sesión. <a href="{{ url_for('login') }}">Iniciar sesión</a></p>
         {% endif %}
     </div>
-
-    <canvas id="gameCanvas" style="display: none;"></canvas>
 
     <div id="audioControls"> <!-- Controles de audio -->
         <button id="audioToggleBtn" onclick="toggleAudio()">
@@ -108,34 +102,5 @@
     <audio id="backgroundMusic" src="{{ url_for('static', filename='audio/background-music.mp3') }}" loop></audio>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
-    <script>
-        function toggleAudio() {
-            const audio = document.getElementById('backgroundMusic');
-            const audioIcon = document.getElementById('audioIcon');
-            
-            if (audio.paused) {
-                audio.play();
-                audioIcon.classList.remove('fa-volume-mute');
-                audioIcon.classList.add('fa-volume-up');
-            } else {
-                audio.pause();
-                audioIcon.classList.remove('fa-volume-up');
-                audioIcon.classList.add('fa-volume-mute');
-            }
-        }
-
-        function setVolume(volume) {
-            const audio = document.getElementById('backgroundMusic');
-            audio.volume = volume;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('backgroundMusic');
-            audio.play().catch(error => {
-                console.log('Audio no apto para reproducción automática, necesita interacción del usuario');
-            });
-        });
-    </script>
 </body>
 </html>

@@ -50,25 +50,25 @@ def login():
         if user and user['password'] == password:
             session['logged_in'] = True
             session['username'] = user['username']
-            return redirect(url_for('game'))
+            return redirect(url_for('matrix'))
         else:
             error = 'Credenciales inválidas. Inténtalo de nuevo.'
             return render_template('login.html', error=error)
 
     return render_template('login.html')
 
-@app.route('/game')
-def game():
+@app.route('/matrix')
+def matrix():
     if 'logged_in' in session:
         username = session['username']
-        return render_template('game.html', username=username)
+        return render_template('matrix.html', username=username)
     else:
         return redirect(url_for('login'))
 
 @app.route('/start_game')
 def start_game():
     if 'logged_in' in session:
-        return "El juego ha comenzado con Phaser.js! Al finalizar vuelve por tus recompensas 🎆."
+        return redirect(url_for('matrix'))
     else:
         return redirect(url_for('login'))
 
